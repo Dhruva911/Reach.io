@@ -1,0 +1,78 @@
+{
+  "manifest_version": 3,
+  "name": "Reach.io – B2B Prospecting",
+  "version": "1.0.0",
+  "description": "Full B2B pipeline: prospect on LinkedIn → AI outreach → track → convert. 100% free.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting",
+    "sidePanel",
+    "notifications",
+    "activeTab",
+    "alarms",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://*.linkedin.com/*",
+    "https://mail.google.com/*",
+    "https://www.google.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.linkedin.com/*"],
+      "js": ["content/linkedin.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content/gmail.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.google.com/search*"],
+      "js": ["content/google-search.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/website.js"],
+      "run_at": "document_idle",
+      "exclude_matches": [
+        "https://*.linkedin.com/*",
+        "https://mail.google.com/*",
+        "https://www.google.com/*"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Reach.io B2B Prospecting"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/index.html"
+  },
+  "options_page": "options/index.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "content/*.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
